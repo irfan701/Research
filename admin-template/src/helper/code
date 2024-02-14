@@ -1,0 +1,14 @@
+ // const [dataList,setData]=useState({
+    //     Rows:[],
+    //     Total:null
+    // })
+
+      // setData(prevObject => ({
+                //     ...prevObject,
+                //     Rows: result.rows,
+                //     Total: result.total
+                //
+                // }))
+
+
+                // let URL = BaseURL+"/products?"+"limit="+perPage+"&skip="+pageNo;
