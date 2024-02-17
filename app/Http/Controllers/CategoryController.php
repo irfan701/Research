@@ -8,19 +8,9 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    function getCategoryDetails()
+
+    function __construct()
     {
-        $CategoryDetailsArray = [];
-        $parentCategory = Category::get();
-        foreach ($parentCategory as $category) {
-            $subCategory = SubCategory::where('cat_id', $category->id)->get();
-            $items = [
-                'cat_name' => $category->cat_name,
-                'cat_img' => $category->cat_image,
-                'subCategory' => $subCategory,
-            ];
-            array_push($CategoryDetailsArray, $items);
-        }
-        return $CategoryDetailsArray;
+        $this->middleware(['auth:sanctum','verified']);
     }
 }

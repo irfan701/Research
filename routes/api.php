@@ -1,15 +1,18 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\SiteInfoController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductsController;
-use App\Http\Controllers\SliderController;
 use App\Http\Controllers\ProductDetailsController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\PasswordResetController;
+use App\Http\Controllers\Api\Auth\VerifyEmailController;
+use App\Http\Controllers\Api\Auth\LogoutController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -17,10 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/send/VisitorDetails',[VisitorController::class,'sendVisitorDetails']);
 Route::post('/insert/ContactDetails',[ContactController::class,'insertContactDetails']);
-Route::get('/get/siteInfo',[SiteInfoController::class,'getSiteInfo']);
+
 Route::get('/get/CategoryDetails',[CategoryController::class,'getCategoryDetails']);
 Route::get('/get/productListByRemark/{remark}',[ProductsController::class,'getProductListByRemark']);
-Route::get('/get/sliderInfo',[SliderController::class,'getSliderInfo']);
 Route::get('/get/productDetails/{product_id}',[ProductDetailsController::class,'getProductDetails']);
 Route::get('/get/notificationHistory',[NotificationController::class,'getNotificationHistory']);
 Route::get('/get/productBySearch/{key}',[ProductsController::class,'getProductBySearch']);
@@ -36,4 +38,19 @@ Route::get('/research/delete/{id}',[\App\Http\Controllers\ResearchController::cl
 Route::post('/research/create',[\App\Http\Controllers\ResearchController::class,'create']);
 Route::get('/research/read/{id}',[\App\Http\Controllers\ResearchController::class,'read']);
 Route::post('/research/update/{id}',[\App\Http\Controllers\ResearchController::class,'update']);
+
+Route::post('/login',LoginController::class);
+Route::post('/logout',LogoutController::class);
+Route::post('/register',[LoginController::class,'register']);
+Route::post('/users',function (){
+    return User::get();
+})->middleware('auth:sanctum');
+
+Route::post('/password/email',[PasswordResetController::class,'sendResetLinkEmail']);
+Route::post('/password/reset',[PasswordResetController::class,'resetPassword'])
+->name('password.reset')->middleware('signed');
+Route::post('/email/verify/send',[VerifyEmailController::class,'sendMail']);
+
+Route::post('/email/verify',[VerifyEmailController::class,'emailVerify'])
+    ->name('email.verify');
 
